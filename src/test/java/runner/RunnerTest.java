@@ -41,7 +41,7 @@ import static util.SizeReducer.resize;
         glue = {"steps", "hooks"})
 public class RunnerTest {
 
-    protected Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static Logger logger = LoggerFactory.getLogger(RunnerTest.class);
     public static AndroidDriver<AndroidElement> driver;
     public final static String UDID = System.getProperty("udid");
     public final static boolean VIDEO_RECORDING = Boolean.parseBoolean(System.getProperty("video"));
@@ -87,7 +87,7 @@ public class RunnerTest {
         try {
             fileContent = toByteArrayAutoClosable(resize(scrFile, percentage));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         Allure.getLifecycle().addAttachment("Скриншот", "image/png", "png", fileContent);
     }
