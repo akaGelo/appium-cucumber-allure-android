@@ -8,12 +8,13 @@ import io.appium.java_client.remote.MobilePlatform;
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import io.qameta.allure.Allure;
-import io.qameta.allure.Attachment;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pages.FoundPointsPage;
 import pages.MainPage;
 import pages.SelectedPointsPage;
@@ -26,7 +27,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Base64;
 import java.util.concurrent.TimeUnit;
 
 import static util.SizeReducer.resize;
@@ -36,10 +36,12 @@ import static util.SizeReducer.resize;
 @CucumberOptions(
         strict = true,
         features = {"src/test/resources/features/"},
+        tags = "@all",
         plugin = {"io.qameta.allure.cucumber4jvm.AllureCucumber4Jvm"},
         glue = {"steps", "hooks"})
 public class RunnerTest {
 
+    protected Logger logger = LoggerFactory.getLogger(this.getClass());
     public static AndroidDriver<AndroidElement> driver;
     public final static String UDID = System.getProperty("udid");
     public final static boolean VIDEO_RECORDING = Boolean.parseBoolean(System.getProperty("video"));
@@ -56,7 +58,7 @@ public class RunnerTest {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
         capabilities.setCapability("deviceName", "defaultDeviceName");
-        capabilities.setCapability("udid", "XTX7N18723007267");
+        capabilities.setCapability("udid", UDID);
         capabilities.setCapability(MobileCapabilityType.NO_RESET, false);
         capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 80000);
         capabilities.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
@@ -74,9 +76,8 @@ public class RunnerTest {
         selectedPointsPage = new SelectedPointsPage(driver);
     }
 
-
     /**
-     * Сделать скриншот
+     * Сделать скриншот экрана
      *
      * @param percentage изменить размер изображения, 1.0 исходный размер
      */
@@ -97,10 +98,4 @@ public class RunnerTest {
             return out.toByteArray();
         }
     }
-
-    @Attachment(value = "Видеозапись выполнения теста", type = "video/mp4")
-    public static byte[] attachmentVideo(String video) {
-        return Base64.getDecoder().decode(video);
-    }
-
 }

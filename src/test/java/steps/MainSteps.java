@@ -11,7 +11,6 @@ public class MainSteps extends BaseSteps{
     @Дано("вводим в поиск название города {string}")
     public void вводимВПоискНазваниеГорода(String city) {
         mainPage.inputField.sendKeys(city);
-        driver.hideKeyboard();
         makeScreenshot(0.5);
     }
 

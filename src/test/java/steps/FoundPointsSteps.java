@@ -12,5 +12,4 @@ public class FoundPointsSteps extends BaseSteps {
         clickElement(driver.findElement(By.xpath("//android.widget.TextView[@text = '" + city + "']")));
         makeScreenshot(0.5);
     }
-
 }
